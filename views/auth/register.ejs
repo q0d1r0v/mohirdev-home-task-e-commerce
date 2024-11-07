@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+  </head>
+  <body>
+    <%- include('../layouts/main') %>
+    <div class="page">
+      <div class="form-container">
+        <h2>Ro'yxatdan o'tish</h2>
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="username">Foydalanuvchi nomi</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Parol</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <button type="submit" class="submit-btn">Ro'yxatdan o'tish</button>
+          <p id="successMessage" class="success-message" style="display: none">
+            Ro'yxatdan o'tish muvaffaqiyatli yakunladi!
+          </p>
+        </form>
+      </div>
+
+      <script>
+        document
+          .getElementById("registerForm")
+          .addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username && password) {
+              try {
+                const form = { username, password };
+                const response = await fetch("/auth/register", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ form }),
+                });
+                if (response.status == 201) {
+                  document.getElementById("successMessage").style.color =
+                    "green";
+                  document.getElementById("successMessage").style.display =
+                    "block";
+                  const { message } = await response.json();
+                  document.getElementById("successMessage").innerText =
+                    message +
+                    " Iltimos kirish sahifasiga o'tib tizimga kirish amalini bajaring!";
+                  document.getElementById("registerForm").reset();
+                } else {
+                  document.getElementById("successMessage").style.color = "red";
+                  const { message } = await response.json();
+                  document.getElementById("successMessage").innerText = message;
+                }
+              } catch (err) {
+                console.log(err);
+              }
+            }
+          });
+      </script>
+    </div>
+  </body>
+</html>

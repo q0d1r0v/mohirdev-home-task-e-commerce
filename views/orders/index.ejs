@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orders</title>
+  </head>
+  <body>
+    <%- include('../layouts/main') %>
+    <div class="page">
+      <div>Buyurtmalar</div>
+      <div>
+        <% for (let i = 0; i < selected_orders.length; i++) { %>
+        <div
+          class="card"
+          onclick="goToProductDetailsPage('<%= selected_orders[i].product.id %>')"
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: end;
+              margin-bottom: 40px;
+            "
+          ></div>
+          <div>Buyurtma ID: <%= selected_orders[i].id %></div>
+          <div style="margin-top: 10px">
+            Nomi: <%= selected_orders[i].product.name %>
+          </div>
+          <div style="margin-top: 10px">
+            Narxi: <%=
+            parseInt(selected_orders[i].product.price).toLocaleString().split(',').join(`
+            `) %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <script>
+      function goToProductDetailsPage(id) {
+        window.location.href = "/product-details/" + id;
+      }
+    </script>
+  </body>
+</html>

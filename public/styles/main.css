@@ -1,0 +1,89 @@
+html, body {
+    margin: 0 auto;
+    font-family: sans-serif;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+.page {
+    padding: 20px;
+    background: #f0f4ff;
+    height: 100vh;
+}
+.right-inside {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    user-select: none;
+}
+.links {
+    transition: all 0.3s;
+    cursor: pointer;
+}
+.links:hover {
+    color: blue;
+}
+.left-inside {
+    font-size: 20px;
+    user-select: none;
+    cursor: pointer;
+}
+.card {
+    background: #fff;
+    display: inline-block;
+    padding: 20px;
+    border-radius: 8px;
+    user-select: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.account-detail-text {
+    margin-left: 10px;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    font-weight: bold;
+}
+.form-group input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+input {
+    height: 28px;
+}
+.success-message {
+    color: green;
+    margin-top: 20px;
+    font-weight: bold;
+}
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.submit-btn:hover {
+    background-color: blue;
+}

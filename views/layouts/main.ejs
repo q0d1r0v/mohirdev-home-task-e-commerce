@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/main.css" />
+    <title>layout</title>
+  </head>
+  <body>
+    <div class="top-bar">
+      <div class="left-inside" onclick="goToPage('/')">E COMMERCE</div>
+      <div class="right-inside">
+        <div class="links" onclick="goToPage('/')">Bosh sahifa</div>
+        <div class="links" onclick="goToPage('/products')">Tovarlar</div>
+        <div class="links" onclick="goToPage(`/cart/${user_id}`)">Savatcha</div>
+        <div class="links" onclick="goToPage(`/orders/${user_id}`)">
+          Buyurtmalar
+        </div>
+        <div class="links" onclick="goToPage('/account')">Shaxsiy sahifa</div>
+      </div>
+    </div>
+
+    <script>
+      const user_id = getCookie("user")
+        ? JSON.parse(getCookie("user") || "{}").id
+        : "";
+      function goToPage(path) {
+        window.location.href = path;
+      }
+      function setCookie(name, value, days) {
+        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie = `${name}=${encodeURIComponent(
+          value
+        )}; expires=${expires}; path=/`;
+      }
+
+      function getCookie(name) {
+        return document.cookie.split("; ").reduce((r, c) => {
+          const [key, val] = c.split("=");
+          return key === name ? decodeURIComponent(val) : r;
+        }, "");
+      }
+
+      function deleteCookie(name) {
+        setCookie(name, "", -1);
+      }
+
+      async function loadData() {
+        const access_token = getCookie("access_token");
+        if (access_token) {
+          const response = await fetch("/api/load/user-data", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${access_token}`,
+            },
+          });
+          if (response.status == 401) {
+            deleteCookie("access_token");
+          }
+          const { user } = await response.json();
+          setCookie("user", JSON.stringify(user), 1);
+        }
+      }
+      loadData();
+    </script>
+  </body>
+</html>

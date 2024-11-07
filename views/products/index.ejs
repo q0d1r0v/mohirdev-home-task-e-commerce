@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products</title>
+  </head>
+  <body>
+    <%- include('../layouts/main') %>
+    <div class="page">
+      <div>Tovarlar</div>
+      <div>
+        <% for (let i = 0; i < products.length; i++) { %>
+        <div
+          class="card"
+          onclick="goToProductDetailsPage('<%= products[i].id %>')"
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: end;
+              margin-bottom: 40px;
+            "
+          >
+            <button
+              onclick="event.stopPropagation();addToCart('<%= products[i].id %>')"
+            >
+              Add to cart
+            </button>
+          </div>
+          <div>ID: <%= products[i].id %></div>
+          <div style="margin-top: 10px">Nomi: <%= products[i].name %></div>
+          <div style="margin-top: 10px">
+            Narxi: <%=
+            parseInt(products[i].price).toLocaleString().split(',').join(' ') %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <script>
+      function goToProductDetailsPage(id) {
+        window.location.href = "/product-details/" + id;
+      }
+      function getCookie(name) {
+        return document.cookie.split("; ").reduce((r, c) => {
+          const [key, val] = c.split("=");
+          return key === name ? decodeURIComponent(val) : r;
+        }, "");
+      }
+      async function addToCart(product_id) {
+        const access_token = getCookie("access_token");
+        const response = await fetch("/api/load/add-to-cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+          body: JSON.stringify({ product_id }),
+        });
+        const { message } = await response.json();
+
+        alert(message);
+      }
+    </script>
+  </body>
+</html>

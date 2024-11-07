@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+  </head>
+  <body>
+    <%- include('../layouts/main') %>
+    <div class="page">
+      <div>Savatchadagi tovarlar</div>
+      <div>
+        <% for (let i = 0; i < selected_carts.length; i++) { %>
+        <div
+          class="card"
+          onclick="goToProductDetailsPage('<%= selected_carts[i].product.id %>')"
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: end;
+              margin-bottom: 40px;
+            "
+          >
+            <button
+              onclick="event.stopPropagation();buy('<%= selected_carts[i].product.id %>')"
+            >
+              Buy
+            </button>
+          </div>
+          <div>Buyurtma ID: <%= selected_carts[i].id %></div>
+          <div style="margin-top: 10px">
+            Nomi: <%= selected_carts[i].product.name %>
+          </div>
+          <div style="margin-top: 10px">
+            Narxi: <%=
+            parseInt(selected_carts[i].product.price).toLocaleString().split(',').join(`
+            `) %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+
+    <script>
+      function goToProductDetailsPage(id) {
+        window.location.href = "/product-details/" + id;
+      }
+      function getCookie(name) {
+        return document.cookie.split("; ").reduce((r, c) => {
+          const [key, val] = c.split("=");
+          return key === name ? decodeURIComponent(val) : r;
+        }, "");
+      }
+      async function buy(product_id) {
+        const access_token = getCookie("access_token");
+        const response = await fetch("/api/load/add-to-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+          body: JSON.stringify({ product_id }),
+        });
+        const { message } = await response.json();
+
+        alert(message);
+      }
+    </script>
+  </body>
+</html>

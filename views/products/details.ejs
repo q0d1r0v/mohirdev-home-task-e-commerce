@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product details</title>
+  </head>
+  <body>
+    <%- include('../layouts/main') %>
+    <div class="page">
+      <div>Tovar nomi: <%= product.name %></div>
+      <div style="margin-top: 10px">
+        <button onclick="addToCart('<%= product.id %>')">
+          Savatga qo'shish
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function getCookie(name) {
+        return document.cookie.split("; ").reduce((r, c) => {
+          const [key, val] = c.split("=");
+          return key === name ? decodeURIComponent(val) : r;
+        }, "");
+      }
+      function addToCart(id) {
+        if (getCookie("access_token")) {
+        } else {
+          alert(
+            "Iltimos birinchi navbatda ro'yxatdan o'ting yoki tizimga kiring!"
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

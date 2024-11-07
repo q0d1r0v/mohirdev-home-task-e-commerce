@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account</title>
+  </head>
+  <body>
+    <%- include('../layouts/main') %>
+    <div class="page">
+      <div id="detail">
+        <div>Foydalanuvchi ID: <span id="user_id"></span></div>
+        <div style="margin-top: 10px">
+          Foydalanuvchi nomi: <span id="username"></span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const container = document.getElementById("detail");
+
+      const div1 = document.createElement("button");
+      const div2 = document.createElement("button");
+      if (getCookie("access_token")) {
+        document.getElementById("user_id").innerText = JSON.parse(
+          getCookie("user")
+        ).id;
+        document.getElementById("username").innerText = JSON.parse(
+          getCookie("user")
+        ).username;
+      } else {
+        div1.textContent = "Kirish";
+        div1.classList.add("account-detail-text");
+
+        div2.textContent = "Ro'yxatdan o'tish";
+        div2.classList.add("account-detail-text");
+
+        container.appendChild(div1);
+        container.appendChild(div2);
+      }
+      function getCookie(name) {
+        return document.cookie.split("; ").reduce((r, c) => {
+          const [key, val] = c.split("=");
+          return key === name ? decodeURIComponent(val) : r;
+        }, "");
+      }
+
+      div1.addEventListener("click", () => {
+        window.location.href = "/auth/login";
+      });
+      div2.addEventListener("click", () => {
+        window.location.href = "/auth/register";
+      });
+    </script>
+  </body>
+</html>
